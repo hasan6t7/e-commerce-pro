@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@import "./styles/theme.css";
+
+/* =================================
+   DARK MODE
+================================= */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* =================================
+   LIGHT THEME
+================================= */
+
+:root {
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-secondary: #f8fafc;
+
+  --foreground: #0f172a;
+  --foreground-secondary: #475569;
+
+  --muted: #64748b;
+
+  --border: #e2e8f0;
+
+  --input: #ffffff;
+
+  --overlay: rgb(15 23 42 / 0.5);
+}
+
+/* =================================
+   DARK THEME
+================================= */
+
+.dark {
+  --background: #0f172a;
+  --surface: #1e293b;
+  --surface-secondary: #334155;
+
+  --foreground: #f8fafc;
+  --foreground-secondary: #cbd5e1;
+
+  --muted: #94a3b8;
+
+  --border: #475569;
+
+  --input: #1e293b;
+
+  --overlay: rgb(0 0 0 / 0.7);
+}
+
+/* =================================
+   CONNECT CSS VARIABLES TO TAILWIND
+================================= */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+
+  --color-muted: var(--muted);
+
+  --color-border: var(--border);
+
+  --color-input: var(--input);
+}
+
+/* =================================
+   GLOBAL RESET
+================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: var(--background);
+  color: var(--foreground);
+
+  font-family: var(--font-sans);
+}

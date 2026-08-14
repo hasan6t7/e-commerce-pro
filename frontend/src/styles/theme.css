@@ -1,0 +1,35 @@
+@theme {
+  /* ================================
+     BRAND COLORS
+  ================================= */
+
+  --color-primary: #ed3849;
+  --color-primary-dark: #d23141;
+  --color-secondary: #111827;
+  --color-accent: #f59e0b;
+
+  /* ================================
+     STATUS COLORS
+  ================================= */
+
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+
+  /* ================================
+     TYPOGRAPHY
+  ================================= */
+
+  --font-sans: "Inter", sans-serif;
+
+  /* ================================
+     BORDER RADIUS
+  ================================= */
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
