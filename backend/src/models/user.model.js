@@ -1,69 +1,79 @@
-import { Schema, model } from 'mongoose';
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
-const addressSchema = new Schema({
-  recipientName: { type: String, required: true },
-  phone: { type: String, required: true },
-  street: { type: String, required: true },
-  city: { type: String, required: true },
-  state: String,
-  postalCode: { type: String, required: true },
-  country: { type: String, default: 'Bangladesh' },
-  isDefault: { type: Boolean, default: false },
-});
-
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
+    role: {
+      type: String,
+      required: true,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: true,
       trim: true,
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-      lowercase: true,
+      required: true,
       trim: true,
-      index: true,
+      unique: true,
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
-      minlength: 6,
-      select: false, 
+      required: true,
+      trim: true,
+      select: false,
+    },
+    avatar: {
+      url: {
+        type: String,
+        trim: true,
+      },
+      public_id: {
+        type: String,
+        trim: true,
+      },
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
     },
     phone: {
       type: String,
       trim: true,
     },
-    avatar: {
+    address: {
       type: String,
-      default: 'https://i.ibb.co/mJRq81h/default-avatar.png',
+      trim: true,
     },
-    role: {
-      type: String,
-      enum: ['customer', 'admin', 'manager', 'staff'],
-      default: 'customer',
+    deletedAt: {
+      type: Date,
+      default: null,
       index: true,
     },
-    permissions: [{ type: String }],
-    status: {
-      type: String,
-      enum: ['active', 'blocked'],
-      default: 'active',
-      index: true,
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
-    verifiedAt: Date,
-    lastLoginAt: Date,
-    addresses: [addressSchema],
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true },
 );
 
-export const User = model('User', userSchema);
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return;
+  }
+  this.password =  await bcrypt.hash(this.password, 10);
+});
+
+userSchema.methods.comparePassword = async function (password) {
+  if (!this.password) {
+    throw new Error(
+      "Password field not available for comparison. Ensure you used .select('+password')",
+    );
+  }
+  return await bcrypt.compare(password, this.password);
+};
+
+const UserModel =
+  mongoose.models.User || mongoose.model("User", userSchema, "users");
+
+export default UserModel;
